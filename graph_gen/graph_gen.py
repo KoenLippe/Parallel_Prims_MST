@@ -1,8 +1,8 @@
 import networkx as nx
 import datetime as dt
 
-n = 100
-p = 0.3
+n = 50
+p = 0.8
 #
 # G = nx.generators.random_graphs.gnp_random_graph(n, p)
 # matrix = nx.to_numpy_matrix(G)
@@ -25,7 +25,7 @@ for i in range(n):
     for j in range(n):
         if i != j:
             ga_connecten = random.randint(0, 1)
-            if ga_connecten:
+            if ga_connecten <= p:
                 sub_list.append(random.randint(1, 10))
             else:
                 sub_list.append(0)
