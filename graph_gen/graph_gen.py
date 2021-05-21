@@ -1,31 +1,16 @@
-import networkx as nx
 import datetime as dt
+import random
 
 n = 50
 p = 0.8
-#
-# G = nx.generators.random_graphs.gnp_random_graph(n, p)
-# matrix = nx.to_numpy_matrix(G)
-
-# nx.write(G, f'test{n}_{p}_{dt.datetime.now()}.txt')
-
-# nx.wr(majsontrix, f'test{n}_{p}_{dt.datetime.now()}.txt')
-
-# file = open(f'test{n}_{p}_{dt.datetime.now()}.txt', 'w')
-# file.write(str(G))
-# file.close()
-
-import random
 
 list = []
-
-
 for i in range(n):
     sub_list = []
     for j in range(n):
         if i != j:
-            ga_connecten = random.randint(0, 1)
-            if ga_connecten <= p:
+            connect = random.randint(0, 1)
+            if connect <= p:
                 sub_list.append(random.randint(1, 10))
             else:
                 sub_list.append(0)
