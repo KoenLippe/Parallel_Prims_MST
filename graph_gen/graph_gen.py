@@ -1,8 +1,8 @@
 import datetime as dt
 import random
 
-n = 50
-p = 0.8
+n = 100
+p = 1
 
 list = []
 for i in range(n):
@@ -22,10 +22,14 @@ for i in range(n):
 
 dict = {}
 
+
+brackets = True
+
 file = open(f'test{n}_{p}_{dt.datetime.now()}.txt', 'w')
 
+
 for index in range(len(list)):
-    file.write("{")
+    if brackets: file.write("{")
     sublist = list[index]
     for sub_index in range(len(sublist)):
         item = sublist[sub_index]
@@ -34,9 +38,9 @@ for index in range(len(list)):
         else:
             file.write(str(str(item)))
 
-    file.write("},")
+    if brackets: file.write("}")
+    file.write(",")
     file.write("\n")
-
 
 # print(dict)
 # file = open(f'test{n}_{p}_{dt.datetime.now()}.txt', 'w')
