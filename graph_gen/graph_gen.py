@@ -1,7 +1,7 @@
 import datetime as dt
 import random
 
-n = 160
+n = 10000
 p = 0.5
 
 list = []

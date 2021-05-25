@@ -33,7 +33,7 @@ class SequentialMSTTest {
         };
         SequentialMST seq = new SequentialMST(graph);
 
-        assertEquals(19, seq.);
+//        assertEquals(19, seq.);
     }
 }
 
