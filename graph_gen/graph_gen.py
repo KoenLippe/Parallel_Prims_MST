@@ -1,15 +1,15 @@
 import datetime as dt
 import random
 
-n = 100
-p = 1
+n = 160
+p = 0.5
 
 list = []
 for i in range(n):
     sub_list = []
     for j in range(n):
         if i != j:
-            connect = random.randint(0, 1)
+            connect = random.random()
             if connect <= p:
                 sub_list.append(random.randint(1, 10))
             else:
