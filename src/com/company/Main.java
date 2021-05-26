@@ -1,9 +1,11 @@
 package com.company;
 
+import com.company.graph_gen.EdgeWeightedGraph;
+import com.company.graph_gen.Graph;
+import com.company.graph_gen.GraphGenerator;
+import com.company.graph_gen.PrimMST;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -25,55 +27,66 @@ public class Main {
 
     private static final String dataSet160_dens05 = "./graph_gen/test160_0.5_2021-05-25 19:23:42.887359.txt";
 
-
-    private static final String bigTest = "./graph_gen/test10000_0.5_2021-05-25 20:59:52.056670.txt";
+    private static final String bigTest = "./graph_gen/test10000_0.5_2021-05-26 10:06:25.969457.txt";
 
     private static int[][] copyTwoDimenArray(int[][] matrix) {
         return Arrays.stream(matrix).map(int[]::clone).toArray(int[][]::new);
     }
 
     public static void main(String[] args) {
-        int[][] graph = null;
-        System.out.println("Reading file");
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(bigTest));
-            ArrayList<List<Integer>> twoDimen = new ArrayList<>();
-
-            // Read from file & store in arraylist
-            String charset;
-            while ((charset = reader.readLine()) != null) {
-                // Read lines and clean from ,
-                List<Integer> row = new ArrayList<>();
-                String[] charsetClean = charset.split(",");
-                for (String value : charsetClean) {
-                    // Strip values
-                    String stripped = value.replace("{", "").replace("}", "");
-                    row.add(Integer.parseInt(stripped));
-                }
-
-                // Assert correct read
-                assert charsetClean.length == row.size();
-                twoDimen.add(row);
-            }
-
-            // Convert arraylist to two dimensional int[][]
-            int[][] convertedArray = new int[twoDimen.size()][];
-            for (int i = 0; i < twoDimen.size(); i++) {
-                List<Integer> row = twoDimen.get(i);
-                convertedArray[i] = row.stream().mapToInt(j -> j).toArray();
-            }
-            graph = convertedArray;
-
-        } catch (Exception e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
-            System.out.println("Something went wrong wile parsing file.");
-        }
-        assert graph != null;
-        int N = graph[0].length;
+//        int[][] graph = null;
+//        System.out.println("Reading file");
+//        try {
+//            BufferedReader reader = new BufferedReader(new FileReader(bigTest));
+//            ArrayList<List<Integer>> twoDimen = new ArrayList<>();
+//
+//            // Read from file & store in arraylist
+//            String charset;
+//            while ((charset = reader.readLine()) != null) {
+//                // Read lines and clean from ,
+//                List<Integer> row = new ArrayList<>();
+//                String[] charsetClean = charset.split(",");
+//                for (String value : charsetClean) {
+//                    // Strip values
+//                    String stripped = value.replace("{", "").replace("}", "");
+//                    row.add(Integer.parseInt(stripped));
+//                }
+//
+//                // Assert correct read
+//                assert charsetClean.length == row.size();
+//                twoDimen.add(row);
+//            }
+//
+//            // Convert arraylist to two dimensional int[][]
+//            int[][] convertedArray = new int[twoDimen.size()][];
+//            for (int i = 0; i < twoDimen.size(); i++) {
+//                List<Integer> row = twoDimen.get(i);
+//                convertedArray[i] = row.stream().mapToInt(j -> j).toArray();
+//            }
+//            graph = convertedArray;
+//
+//        } catch (Exception e) {
+//            System.out.println(Arrays.toString(e.getStackTrace()));
+//            System.out.println("Something went wrong wile parsing file.");
+//        }
+//        assert graph != null;
+//        int N = graph[0].length;
 
         System.out.println("Performing MST");
 
-//        // Setup
+        long start = System.nanoTime();
+        EdgeWeightedGraph G = new EdgeWeightedGraph(5500000, 40000000);
+        long end = System.nanoTime();
+        System.out.println((end - start) / 1e9);
+
+
+        start = System.nanoTime();
+        PrimMST mst = new PrimMST(G);
+        end = System.nanoTime();
+        System.out.println((end - start) / 1e9);
+
+
+////        // Setup
 //        int[][] seqMatrix = copyTwoDimenArray(graph);
 //        int[][] tnlMatrix = copyTwoDimenArray(graph);
 //
@@ -102,19 +115,21 @@ public class Main {
 //        // Final validation
 //        for (int i = 0; i < N - 1; i++) assert seqMSTOutputWithoutRoot[i] == tnlMSTOutputWithoutRoot[i];
 
-//         Benchmarking setup for ThreadsNLock solution
-        int[] cores = new int[]{1, 2, 4, 6, 8, 10};
-        for (int core : cores) {
-            int[][] arrayCopy = Main.copyTwoDimenArray(graph);
-            // Threads & Lock
-            ThreadsNLocksMST mst = new ThreadsNLocksMST(arrayCopy, core);
-            long benchStart = System.nanoTime();
-            mst.primMST();
-            long benchEnd = System.nanoTime();
-            long time = benchEnd - benchStart;
-            System.out.printf("N(%d), Cores: %-3d Time: %f\n", N, core, (time / 1e9));
-        }
+//        TODO: -Xint
+//        TODO: Aantal edges per node is
 
+////         Benchmarking setup for ThreadsNLock solution
+//        int[] cores = new int[]{1, 2, 4, 6, 8, 10};
+//        for (int core : cores) {
+//            int[][] arrayCopy = Main.copyTwoDimenArray(graph);
+//            // Threads & Lock
+//            ThreadsNLocksMST mst = new ThreadsNLocksMST(arrayCopy, core);
+//            long benchStart = System.nanoTime();
+//            mst.primMST();
+//            long benchEnd = System.nanoTime();
+//            long time = benchEnd - benchStart;
+//            System.out.printf("N(%d), Cores: %-3d Time: %f\n", N, core, (time / 1e9));
+//        }
     }
 }
 // TODO Uitlegen waarom ROOT niet meedoet
